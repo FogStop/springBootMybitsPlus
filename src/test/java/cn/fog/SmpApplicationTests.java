@@ -108,8 +108,12 @@ class SmpApplicationTests {
 		List<User> list01 = userMapper.selectList(queryWrapper);
 		System.out.println(list01+"InSql 在里面写sql语句 同样也有notInSql");
 
-/**
- * 还有groupBy、orderByAsc、orderByDesc、having、func、or
+
+
+
+/*
+  还有groupBy、orderByAsc、orderByDesc、having、func、or,isNotNull
+  and,nested,apply,last,exists,notExists
  */
 
 	}
