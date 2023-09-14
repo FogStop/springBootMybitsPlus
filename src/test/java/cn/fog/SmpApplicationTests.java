@@ -4,13 +4,19 @@ import cn.fog.entity.User;
 import cn.fog.mapper.UserMapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.mysql.cj.log.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 @SpringBootTest
+@Slf4j
 class SmpApplicationTests {
 	@Autowired
 	UserMapper userMapper;
@@ -108,14 +114,60 @@ class SmpApplicationTests {
 		List<User> list01 = userMapper.selectList(queryWrapper);
 		System.out.println(list01+"InSql 在里面写sql语句 同样也有notInSql");
 
-
-
-
 /*
   还有groupBy、orderByAsc、orderByDesc、having、func、or,isNotNull
   and,nested,apply,last,exists,notExists
  */
+	}
 
+	@Test
+	void contextLoads07(){
+		log.info("多种条件01");
+		LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+
+		queryWrapper.gt(User::getAge,16);
+		queryWrapper.or(query->{
+			query.eq(User::getName,"tom");
+			query.eq(User::getId,1);
+		});
+		queryWrapper.eq(User::getName,"tom");
+		List<User> list = userMapper.selectList(queryWrapper);
+		System.out.println(list);
+	}
+
+	/**
+	 * 07，08上下等价
+	 */
+	@Test
+	void contextLoads08(){
+		log.info("多种条件02");
+		LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+
+		queryWrapper.gt(User::getAge,16);
+		queryWrapper.or(new Consumer<LambdaQueryWrapper<User>>() {
+			@Override
+			public void accept(LambdaQueryWrapper<User> userLambdaQueryWrapper) {
+				userLambdaQueryWrapper.eq(User::getName,"tom");
+				userLambdaQueryWrapper.eq(User::getId,1);
+			}
+		});
+
+		List<User> list = userMapper.selectList(queryWrapper);
+		System.out.println(list);
+	}
+	//分⻚查询
+	@Test
+	void testSelectPage(){
+//1 创建IPage分⻚对象,设置分⻚参数
+		IPage<User> page=new Page<>(1,3);
+//2 执⾏分⻚查询
+		userMapper.selectPage(page,null);
+//3 获取分⻚结果
+		System.out.println("当前⻚码值："+page.getCurrent());
+		System.out.println("每⻚显示数："+page.getSize());
+		System.out.println("总⻚数："+page.getPages());
+		System.out.println("总条数："+page.getTotal());
+		System.out.println("当前⻚数据："+page.getRecords());
 	}
 
 }
