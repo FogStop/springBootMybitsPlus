@@ -2,6 +2,7 @@ package cn.fog.conf;
 
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,4 +16,7 @@ MybatisPlusInterceptor mpInterceptor=new MybatisPlusInterceptor();
 mpInterceptor.addInnerInterceptor(new PaginationInnerInterceptor());
 return mpInterceptor;
  }
+
+ Integer PageCurrent = null;
+ Integer PageSize=null;
 }
