@@ -171,6 +171,22 @@ class SmpApplicationTests {
 		System.out.println("总条数："+page.getTotal());
 		System.out.println("当前⻚数据："+page.getRecords());
 	}
+	@Test
+	void testSelectPage(User user,Integer current,Integer pageSize){
+		if (current==null){
+			current=1;
+		}
+		if (pageSize==null){
+			pageSize=3;
+		}
+		IPage<User> page = new Page<>(current,pageSize);
+		LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+		queryWrapper.gt(user.getAge()!=null,User::getAge,user.getAge());
+		queryWrapper.eq(user.getName()!=null,User::getName,user.getName());
+
+		IPage<User> userIPage = userMapper.selectPage(page, queryWrapper);
+		return null;
+	}
 
 	@Test
 	void contextLoads09(){
@@ -211,16 +227,22 @@ class SmpApplicationTests {
 		 log.info("按照主键删除,查询多条记录");
 
 		ArrayList<Long> list = new ArrayList<>();
-		list.add(145154112L);
-		list.add(1402553134049501186L);
-		list.add(1402553619611430913L);
+		list.add(1L);
+		list.add(6L);
+		list.add(5L);
 		userMapper.deleteBatchIds(list);
 
 		List<Long> list01 = new ArrayList<>();
-		list01.add(1L);
 		list01.add(3L);
 		list01.add(4L);
 		userMapper.selectBatchIds(list);
 	}
+	@Test
+	void contextLoads12(){
+		log.info("逻辑删除");
+		LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+		List<User> users = userMapper.selectList(queryWrapper);
+		System.out.println(users);
 
+	}
 }

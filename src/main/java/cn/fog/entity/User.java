@@ -15,5 +15,6 @@ public class User {
     private Integer age;
     @TableField(value = "tel")
     private String tel;
+    private Integer del;
 //⾃⾏添加getter、setter、toString()等⽅法
 }
