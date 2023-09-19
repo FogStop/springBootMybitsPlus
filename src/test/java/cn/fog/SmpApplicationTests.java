@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -204,8 +205,22 @@ class SmpApplicationTests {
 		user.setPassword("45afg3");
 //		user.setId(4233L);
 		userMapper.insert(user);
+	}
+	@Test
+	void contextLoads11(){
+		 log.info("按照主键删除,查询多条记录");
 
+		ArrayList<Long> list = new ArrayList<>();
+		list.add(145154112L);
+		list.add(1402553134049501186L);
+		list.add(1402553619611430913L);
+		userMapper.deleteBatchIds(list);
 
+		List<Long> list01 = new ArrayList<>();
+		list01.add(1L);
+		list01.add(3L);
+		list01.add(4L);
+		userMapper.selectBatchIds(list);
 	}
 
 }
