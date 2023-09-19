@@ -4,6 +4,7 @@ import cn.fog.entity.User;
 import cn.fog.mapper.UserMapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,5 +69,22 @@ public class UserController {
         userMapper.insert(user);
 
         return null;
+    }
+
+    @PostMapping("/page")
+    public IPage<User> getPage(User user, Integer current, Integer pageSize) {
+        if (current==null){
+            current=1;
+        }
+        if (pageSize==null){
+            pageSize=3;
+        }
+        IPage<User> page = new Page<>(current,pageSize);
+        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.gt(user.getAge()!=null,User::getAge,user.getAge());
+        queryWrapper.eq(user.getName()!=null,User::getName,user.getName());
+
+        IPage<User> userIPage = userMapper.selectPage(page, queryWrapper);
+        return userIPage;
     }
 }

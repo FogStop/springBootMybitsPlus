@@ -171,22 +171,6 @@ class SmpApplicationTests {
 		System.out.println("总条数："+page.getTotal());
 		System.out.println("当前⻚数据："+page.getRecords());
 	}
-	@Test
-	void testSelectPage(User user,Integer current,Integer pageSize){
-		if (current==null){
-			current=1;
-		}
-		if (pageSize==null){
-			pageSize=3;
-		}
-		IPage<User> page = new Page<>(current,pageSize);
-		LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
-		queryWrapper.gt(user.getAge()!=null,User::getAge,user.getAge());
-		queryWrapper.eq(user.getName()!=null,User::getName,user.getName());
-
-		IPage<User> userIPage = userMapper.selectPage(page, queryWrapper);
-		return null;
-	}
 
 	@Test
 	void contextLoads09(){
