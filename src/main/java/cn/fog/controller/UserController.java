@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
-import org.omg.CORBA.Current;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,7 +31,7 @@ public class UserController {
         queryWrapper.eq(user.getName()!=null,User::getName,user.getName());
 //        if (user.getName()!=null){
 //            queryWrapper.like(User::getName,user.getName());
-//        }上下等价
+//        }上下等价条件内的嵌套
         List<User> list = userMapper.selectList(queryWrapper);
         return list;
     }
@@ -57,6 +56,17 @@ public class UserController {
         queryWrapper.groupBy("tel");
         List<Map<String, Object>> Userlist = userMapper.selectMaps(queryWrapper);
         System.out.println(Userlist);
+        return null;
+    }
+
+    @PostMapping("/user01")
+    public List<User> getUser01(){
+        User user = new User();
+        user.setTel("0");
+        user.setAge(19);
+        user.setName("张三");
+        userMapper.insert(user);
+
         return null;
     }
 }

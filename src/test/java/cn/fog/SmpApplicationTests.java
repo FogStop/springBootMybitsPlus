@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 @SpringBootTest
@@ -168,6 +169,43 @@ class SmpApplicationTests {
 		System.out.println("总⻚数："+page.getPages());
 		System.out.println("总条数："+page.getTotal());
 		System.out.println("当前⻚数据："+page.getRecords());
+	}
+
+	@Test
+	void contextLoads09(){
+		log.info(" 查询结果包含模型类中未定义的属性");
+		QueryWrapper<User> lqw = new QueryWrapper<User>();
+		lqw.select("count(*) as count, tel");
+		lqw.groupBy("tel");
+		List<Map<String, Object>> userList = userMapper.selectMaps(lqw);
+		System.out.println(userList);
+	}
+
+	@Test
+	void contextLoads10(){
+		log.info("更改实体类名，应用注解进行对应");
+		/**
+		 *  @TableField(value = "tel")
+		 *  	@TableField(exist = false) //表示online字段不参与CRUD操作
+		 * @TableName("tb_user")  在实体类进行表名的对应，放在类名注解处
+		 *  id⽣成策略控制（@TableId注解）
+			 * @TableId(type = IdType.AUTO)
+			 * 	private int id;
+		 	 *AUTO(0):数据库id自增策略id生成
+		 	 *NONE(1):不设置id生产策略
+		 	 *INPUT(2): 用户手工输入id
+		  	 *ASSIGN_ID(3):雪花算法生产id（兼容数值型和字符型）
+		 	 *ASSIGN_UUID(4):使用UUID算法策略生产id
+		 */
+		User user = new User();
+		user.setTel("0");
+		user.setAge(19);
+		user.setName("张三");
+		user.setPassword("45afg3");
+//		user.setId(4233L);
+		userMapper.insert(user);
+
+
 	}
 
 }
