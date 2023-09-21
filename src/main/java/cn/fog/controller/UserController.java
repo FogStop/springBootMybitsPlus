@@ -1,10 +1,16 @@
 package cn.fog.controller;
 
 import cn.fog.common.JsonResult;
+import cn.fog.dto.UserDto;
 import cn.fog.entity.User;
 import cn.fog.service.UserService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequestMapping("/users")
@@ -35,7 +41,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/{id}")
+    @DeleteMapping("/{id}")
     public JsonResult delete(@PathVariable Long id){
         boolean removeById = userService.removeById(id);
         if (removeById){
@@ -43,5 +49,30 @@ public class UserController {
         }else {
             return JsonResult.failure(500,"删除失败");
         }
+    }
+
+    @GetMapping("/{id}")
+    public JsonResult getById(@RequestBody Long id){
+        User user = userService.getById(id);
+        return JsonResult.ok(user);
+    }
+
+    @GetMapping
+    public JsonResult getAll(@RequestBody UserDto userDto){
+        if (userDto.getCurrent()==null){
+            userDto.setCurrent(1);
+        }
+        if (userDto.getPageSize()==null){
+            userDto.setPageSize(5);
+        }
+        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+//        hasText传递字符串，不是空就返回true，不然就是false， 先获取如果有就执行userDto.getName()，
+//        根据User::getName条件查询userDto.getName()
+        queryWrapper.like(StringUtils.hasText(userDto.getName()), User::getName, userDto.getName());
+        queryWrapper.eq(userDto.getAge()!=null,User::getAge,userDto.getAge());
+        queryWrapper.likeLeft(StringUtils.hasText(userDto.getTel()),User::getTel,userDto.getTel());
+        IPage<User> page = new Page<>(userDto.getCurrent(),userDto.getPageSize());
+        IPage<User> iPage = userService.page(page, queryWrapper);
+        return JsonResult.ok(iPage);
     }
 }
