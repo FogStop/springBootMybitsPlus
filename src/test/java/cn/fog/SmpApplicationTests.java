@@ -211,22 +211,16 @@ class SmpApplicationTests {
 		 log.info("按照主键删除,查询多条记录");
 
 		ArrayList<Long> list = new ArrayList<>();
-		list.add(1L);
-		list.add(6L);
-		list.add(5L);
+		list.add(145154112L);
+		list.add(1402553134049501186L);
+		list.add(1402553619611430913L);
 		userMapper.deleteBatchIds(list);
 
 		List<Long> list01 = new ArrayList<>();
+		list01.add(1L);
 		list01.add(3L);
 		list01.add(4L);
 		userMapper.selectBatchIds(list);
 	}
-	@Test
-	void contextLoads12(){
-		log.info("逻辑删除");
-		LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
-		List<User> users = userMapper.selectList(queryWrapper);
-		System.out.println(users);
 
-	}
 }
