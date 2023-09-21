@@ -6,4 +6,5 @@ import cn.fog.service.UserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 public class UserServiceImpl extends ServiceImpl<UserMapper, User>implements UserService {
+
 }
