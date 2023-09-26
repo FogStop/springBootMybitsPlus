@@ -37,7 +37,7 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, UserRole> i
     @Override
     public List<UserRole> search(Serializable id) {
         LambdaQueryWrapper<UserRole> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(id!=null,UserRole::getRoleId,id);
+        queryWrapper.eq(id!=null,UserRole::getUserId,id);
        return mapper.selectList(queryWrapper);
     }
 }

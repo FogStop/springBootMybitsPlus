@@ -88,6 +88,7 @@ public class UserController {
     @GetMapping("/searchRoleByUserid/{userId}")
     public JsonResult getAll(@PathVariable Long userId){
         List<UserRole> list = userRoleService.search(userId);
+        System.out.println(list);
        List<Long> roles = list.stream().map(UserRole::getRoleId).collect(Collectors.toList());
 //       List<Long> roles = new ArrayList<>();
 //        for (UserRole userRole : list) {
