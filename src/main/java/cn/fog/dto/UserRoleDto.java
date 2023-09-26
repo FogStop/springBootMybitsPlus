@@ -1,10 +1,10 @@
-package cn.fog.entity;
+package cn.fog.dto;
 
 import lombok.Data;
 
 @Data
-public class UserRole {
+public class UserRoleDto{
     private Long id;
-    private Long userIid;
+    private Long userId;
     private Long roleId;
 }
