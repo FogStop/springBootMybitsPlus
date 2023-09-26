@@ -1,4 +1,4 @@
-package cn.fog.common;
+package cn.fog.entity;
 
 import lombok.Data;
 

@@ -1,13 +1,12 @@
 package cn.fog.controller;
 
-import cn.fog.common.JsonResult;
+import cn.fog.entity.JsonResult;
 import cn.fog.dto.UserDto;
 import cn.fog.entity.User;
 import cn.fog.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
