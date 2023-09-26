@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class UserRole {
     private Long id;
-    private Long userIid;
+    private Long userId;
     private Long roleId;
 }

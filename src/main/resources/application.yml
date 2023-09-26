@@ -16,9 +16,9 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 # 全局策略配置，表名前缀全局配置
-  global-config:
-    db-config:
-      id-type: assign_id
+#  global-config:
+#    db-config:
+#      id-type: assign_id
 #      table-prefix: tbl_
 
 

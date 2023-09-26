@@ -15,8 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -86,14 +88,14 @@ public class UserController {
     @GetMapping("/searchRoleByUserid/{userId}")
     public JsonResult getAll(@PathVariable Long userId){
         List<UserRole> list = userRoleService.search(userId);
-        List<Long> roles = list.stream().map(UserRole::getRoleId).collect(Collectors.toList());
-     /*   List<Long> roles = new ArrayList<>();
-        for (UserRole userRole : list) {
-            roles.add(userRole.getRoleId());
-        }*/
+       List<Long> roles = list.stream().map(UserRole::getRoleId).collect(Collectors.toList());
+//       List<Long> roles = new ArrayList<>();
+//        for (UserRole userRole : list) {
+//            roles.add(userRole.getRoleId());
+//        }
 
         List<Role> roles1 = roleService.listByIds(roles);
         return JsonResult.ok(roles1);
-
     }
+
 }
