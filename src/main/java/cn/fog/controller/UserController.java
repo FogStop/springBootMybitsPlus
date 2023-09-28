@@ -1,10 +1,8 @@
 package cn.fog.controller;
 
-import cn.fog.entity.JsonResult;
+import cn.fog.entity.*;
 import cn.fog.dto.UserDto;
-import cn.fog.entity.Role;
-import cn.fog.entity.User;
-import cn.fog.entity.UserRole;
+import cn.fog.service.ResRoleService;
 import cn.fog.service.RoleService;
 import cn.fog.service.UserRoleService;
 import cn.fog.service.UserService;
@@ -28,6 +26,8 @@ public class UserController {
     private UserRoleService userRoleService;
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private ResRoleService resRoleService;
     @PostMapping("/add")
     public JsonResult add(@RequestBody User user){
         boolean save = userService.save(user);
@@ -86,15 +86,23 @@ public class UserController {
         return JsonResult.ok(iPage);
     }
     @GetMapping("/searchRoleByUserid/{userId}")
-    public JsonResult getAll(@PathVariable Long userId){
+    public JsonResult getAll01(@PathVariable Long userId){
         List<UserRole> list = userRoleService.search(userId);
         System.out.println(list);
-       List<Long> roles = list.stream().map(UserRole::getRoleId).collect(Collectors.toList());
-//       List<Long> roles = new ArrayList<>();
+       List<Long> roles = list.stream().map(UserRole::getRoleId).collect(Collectors.toList());//       List<Long> roles = new ArrayList<>();
 //        for (UserRole userRole : list) {
 //            roles.add(userRole.getRoleId());
 //        }
 
+        List<Role> roles1 = roleService.listByIds(roles);
+        return JsonResult.ok(roles1);
+    }
+
+    @GetMapping("/searchRoleByResid/{userId}")
+    public JsonResult getAll02(@PathVariable Long userId){
+        List<ResRole> list = resRoleService.search(userId);
+        System.out.println(list);
+        List<Long> roles = list.stream().map(ResRole::getRoleId).collect(Collectors.toList());
         List<Role> roles1 = roleService.listByIds(roles);
         return JsonResult.ok(roles1);
     }
