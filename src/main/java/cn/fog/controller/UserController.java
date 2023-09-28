@@ -2,10 +2,7 @@ package cn.fog.controller;
 
 import cn.fog.entity.*;
 import cn.fog.dto.UserDto;
-import cn.fog.service.ResRoleService;
-import cn.fog.service.RoleService;
-import cn.fog.service.UserRoleService;
-import cn.fog.service.UserService;
+import cn.fog.service.*;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -28,6 +25,8 @@ public class UserController {
     private RoleService roleService;
     @Autowired
     private ResRoleService resRoleService;
+    @Autowired
+    private ResService resService;
     @PostMapping("/add")
     public JsonResult add(@RequestBody User user){
         boolean save = userService.save(user);
@@ -100,11 +99,15 @@ public class UserController {
 
     @GetMapping("/searchRoleByResid/{userId}")
     public JsonResult getAll02(@PathVariable Long userId){
-        List<ResRole> list = resRoleService.search(userId);
-        System.out.println(list);
-        List<Long> roles = list.stream().map(ResRole::getRoleId).collect(Collectors.toList());
-        List<Role> roles1 = roleService.listByIds(roles);
-        return JsonResult.ok(roles1);
+        List<UserRole> list = userRoleService.search(userId);
+        List<Long> roles = list.stream().map(UserRole::getRoleId).collect(Collectors.toList());
+
+        LambdaQueryWrapper<ResRole> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.in(ResRole::getRoleId,roles);
+        List<ResRole> resRoleList = resRoleService.list(queryWrapper);
+        List<Long> resList = resRoleList.stream().map(ResRole::getResId).collect(Collectors.toList());
+        List<Res> res = resService.listByIds(resList);
+        return JsonResult.ok(res);
     }
 
 }

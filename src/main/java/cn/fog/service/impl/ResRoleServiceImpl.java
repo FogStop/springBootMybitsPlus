@@ -17,9 +17,9 @@ public class ResRoleServiceImpl extends ServiceImpl<ResRoleMapper, ResRole> impl
     @Autowired
     private ResRoleMapper mapper;
     @Override
-    public int deleteByResId(Long resId) {
+    public int deleteByResId(Long userId) {
         LambdaQueryWrapper<ResRole> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(ResRole::getRoleId,resId);
+        queryWrapper.eq(ResRole::getRoleId,userId);
         int deleted = mapper.delete(queryWrapper);
 
         return deleted;
