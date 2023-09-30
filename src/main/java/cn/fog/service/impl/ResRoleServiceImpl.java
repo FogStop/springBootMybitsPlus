@@ -40,4 +40,12 @@ public class ResRoleServiceImpl extends ServiceImpl<ResRoleMapper, ResRole> impl
         queryWrapper.eq(id!=null,ResRole::getResId,id);
         return mapper.selectList(queryWrapper);
     }
+
+    @Override
+    public List<ResRole> search01(List<Long> id) {
+        LambdaQueryWrapper<ResRole> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(id!=null,ResRole::getRoleId,id);
+        return mapper.selectList(queryWrapper);
+    }
+
 }

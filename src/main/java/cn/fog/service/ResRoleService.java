@@ -10,4 +10,5 @@ public interface ResRoleService extends IService<ResRole> {
     int deleteByResId(Long userId);
     int deleteByRoleId(Long roleId);
     List<ResRole> search(Serializable id);
+    List<ResRole> search01(List<Long> id);
 }

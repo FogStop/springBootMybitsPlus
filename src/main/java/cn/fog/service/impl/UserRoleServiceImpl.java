@@ -40,4 +40,5 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, UserRole> i
         queryWrapper.eq(id!=null,UserRole::getUserId,id);
        return mapper.selectList(queryWrapper);
     }
+
 }
